@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 8102
   
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/microservices
+    url: jdbc:mysql://localhost:3306/EntitiesData
     username: root
     password: Ravi@0712
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,4 +15,25 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-        
+  
+  security:
+    user:
+      name: ravi
+      password: 12345
+      
+  application:
+    name: user-service
+    
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  
+     
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name}, %X{traceId:-},%X{spanId:-}]"

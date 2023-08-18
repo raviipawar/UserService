@@ -1,5 +1,7 @@
 package com.learning.userservice.entities;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -16,15 +18,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "user_data")
-public class User {
+@Table(name = "yoga_school_data")
+public class YogaSchool {
+
 	@Id
 	@Column(name = "ID")
-	private String userId;
-	@Column(name = "FIRST_NAME")
-	private String firstName;
-	@Column(name = "LAST_NAME")
-	private String lastName;
+	private String schoolId;
+	@Column(name = "YOGA_SCHOOL_NAME")
+	private String schoolName;
 	@Column(name = "EMAIL")
 	private String email;
 	@Column(name = "CONTACT_NUMBER")
@@ -33,10 +34,10 @@ public class User {
 	private String address;
 	@Column(name = "PINCODE")
 	private String pincode;
-	@Column(name = "SEX")
-	private String sex;
-	@Column(name = "NATIONALITY")
-	private String nationality;
-	@Column(name = "ABOUT")
-	private String about;
+	@Column(name = "CITY")
+	private String city;
+	@Column(name = "OWNER")
+	private String ownerName;
+	@Column(name = "REVIEW")
+	private List<String> review;
 }
