@@ -1,5 +1,8 @@
 package com.learning.userservice.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,5 +25,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
 		return UserDetailsImpl.build(user);
+	}
+
+	public List<User> fetchAllUsers() {
+		return userRepository.findAll();
+	}
+	
+	public Optional<User> fetchUserById(Long id) {
+		return userRepository.findById(id);
 	}
 }

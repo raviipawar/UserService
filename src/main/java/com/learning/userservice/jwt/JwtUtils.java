@@ -2,14 +2,13 @@ package com.learning.userservice.jwt;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import com.learning.userservice.service.UserDetailsImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -24,20 +23,20 @@ public class JwtUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-	@Value("${bezkoder.app.jwtSecret}")
-	private String jwtSecret;
+	private String jwtSecret = "Hellooooo===============gsdgsfdgsdgsdgsdgsdgsdgdsgsdgsdgsdgsdgsdg==================================ooooooooooooooooooo";
 
-	@Value("${bezkoder.app.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	public static final long JWT_TOKEN_VALIDITY  = 50;
 
-	public String generateJwtToken(Authentication authentication) {
-
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-
-		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				.signWith(key(), SignatureAlgorithm.HS256).compact();
+	public String generateJwtToken(UserDetails user) {
+		Map<String, Object> claims = new HashMap<>();
+		return doGenerateToken(claims, user.getUsername());
 	}
+	// generate token HS512 algo and secret key use
+		private String doGenerateToken(Map<String, Object> claims, String userName) {
+			return Jwts.builder().setClaims(claims).setSubject(userName).setIssuedAt(new Date())
+					.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+					.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+		}
 
 	private Key key() {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
