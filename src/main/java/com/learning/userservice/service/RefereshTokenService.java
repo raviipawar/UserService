@@ -27,18 +27,15 @@ public class RefereshTokenService {
 
 		User user = userRepository.findByUsername(userName).get();
 		RefreshToken refreshToken1 = user.getRefreshToken();
-		
-		if(refreshToken1==null) {
+
+		if (refreshToken1 == null) {
 			refreshToken1 = RefreshToken.builder().refreshToken(UUID.randomUUID().toString())
 					.expiry(Instant.now().plusMillis(refreshTokenValidity))
 					.user(userRepository.findByUsername(userName).get()).build();
-		}
-		else {
+		} else {
 			refreshToken1.setExpiry(Instant.now().plusMillis(refreshTokenValidity));
 		}
-		
 		user.setRefreshToken(refreshToken1);
-		//save to database
 		refreshTokenRepository.save(refreshToken1);
 		return refreshToken1;
 	}
@@ -57,17 +54,14 @@ public class RefereshTokenService {
 	public Optional<RefreshToken> findByToken(String refreshToken) {
 		return refreshTokenRepository.findByRefreshToken(refreshToken);
 	}
-	
-	// Delete refresh token for the user (logout)
-	@Transactional
-    public void logoutUser(User user) {
-        refreshTokenRepository.deleteByUser(user);
-    }
 
-    // Optional: delete a specific refresh token by token string
+	@Transactional
+	public void logoutUser(User user) {
+		refreshTokenRepository.deleteByUser(user);
+	}
+
 	@Transactional
 	public void deleteToken(String token) {
-        refreshTokenRepository.findByRefreshToken(token)
-                .ifPresent(refreshTokenRepository::delete);
-    }
+		refreshTokenRepository.findByRefreshToken(token).ifPresent(refreshTokenRepository::delete);
+	}
 }

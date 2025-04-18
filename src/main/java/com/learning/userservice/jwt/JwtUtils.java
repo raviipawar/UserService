@@ -22,21 +22,20 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtils {
 
 	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
-
 	private String jwtSecret = "Hellooooo===============gsdgsfdgsdgsdgsdgsdgsdgdsgsdgsdgsdgsdgsdg==================================ooooooooooooooooooo";
-
-	public static final long JWT_TOKEN_VALIDITY  = 50;
+	public static final long JWT_TOKEN_VALIDITY = 50;
 
 	public String generateJwtToken(UserDetails user) {
 		Map<String, Object> claims = new HashMap<>();
 		return doGenerateToken(claims, user.getUsername());
 	}
-	// generate token HS512 algo and secret key use
-		private String doGenerateToken(Map<String, Object> claims, String userName) {
-			return Jwts.builder().setClaims(claims).setSubject(userName).setIssuedAt(new Date())
-					.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
-					.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
-		}
+
+	@SuppressWarnings("deprecation")
+	private String doGenerateToken(Map<String, Object> claims, String userName) {
+		return Jwts.builder().setClaims(claims).setSubject(userName).setIssuedAt(new Date())
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
+	}
 
 	private Key key() {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
@@ -59,7 +58,6 @@ public class JwtUtils {
 		} catch (IllegalArgumentException e) {
 			logger.error("JWT claims string is empty: {}", e.getMessage());
 		}
-
 		return false;
 	}
 }
