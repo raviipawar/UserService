@@ -68,10 +68,11 @@ public class User implements UserDetails {
 	public User() {
 	}
 
-	public User(String username, String email, String password) {
+	public User(String username, String email, String password,Set<String> set) {
 		this.username = username;
 		this.email = email;
 		this.password = password;
+		this.roles=roles;
 	}
 
 	@Override

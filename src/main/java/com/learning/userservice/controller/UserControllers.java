@@ -16,7 +16,7 @@ import com.learning.userservice.entities.User;
 import com.learning.userservice.jwt.JwtUtils;
 import com.learning.userservice.service.UserDetailsServiceImpl;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = {"http://localhost:8081", "http://192.168.1.6:8081"})
 @RestController
 @RequestMapping("/users")
 public class UserControllers {
